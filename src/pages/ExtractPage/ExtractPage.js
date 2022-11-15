@@ -9,6 +9,9 @@ export default function ExtractPage() {
         <UserName>Olá, Fulano</UserName>
         <RiLogoutBoxRLine />
       </Header>
+      <ExtractInformation>
+        <span> Não há registro de entrada ou saída!</span>
+      </ExtractInformation>
     </Container>
   );
 }
@@ -24,7 +27,6 @@ const Container = styled.main`
 `;
 const Header = styled.section`
   width: 100%;
-  background: red;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,12 +35,35 @@ const Header = styled.section`
     font-size: 30px;
   }
 `;
-const UserName = styled.span`
- 
+const UserName = styled.h1`
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 26px;
+  color: #ffffff;
+`;
+
+const ExtractInformation = styled.section`
+  width: 100%;
+  height: 446px;
+  background: #ffffff;
+  background: #ffffff;
+  border-radius: 5px;
+  margin-top: 22px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span {
+    width: 180px;
+    height: 46px;
     font-family: "Raleway";
     font-style: normal;
-    font-weight: 700;
-    font-size: 26px;
-    color: #FFFFFF;
-  
-`
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 23px;
+    color: #868686;
+    text-align: center;
+  }
+`;
+
