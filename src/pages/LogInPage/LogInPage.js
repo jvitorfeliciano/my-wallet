@@ -6,19 +6,19 @@ import StyledLink from "../../components/StyledLink/StyledLink";
 
 export default function LogInPage() {
   return (
-    <LoginContainer>
+    <Container>
       <Logo />
       <form>
-        <Input type="email" placeholder="E-mail" />
-        <Input type="password" placeholder="Senha" />
+        <Input type="email" placeholder="E-mail" required />
+        <Input type="password" placeholder="Senha" required />
         <Button>Entrar</Button>
       </form>
       <StyledLink to="/sign-up">Primeira vez? Cadastre-se!</StyledLink>
-    </LoginContainer>
+    </Container>
   );
 }
 
-const LoginContainer = styled.main`
+const Container = styled.main`
   height: 100vh;
   width: 100vw;
   background-color: #8c16be;
@@ -28,5 +28,3 @@ const LoginContainer = styled.main`
   align-items: center;
   padding: 21px;
 `;
-
-
