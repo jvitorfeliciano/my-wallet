@@ -1,12 +1,16 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LogInPage from "./pages/LogInPage/LogInPage";
 import GlobalStyle from "./style/GlobalStyle";
-
+import SignUpPage from "./pages/SignUpPage/SignUpPage";
 function App() {
   return (
-    <>
+    <BrowserRouter>
       <GlobalStyle />
-      <LogInPage />
-    </>
+      <Routes>
+        <Route path="/" element={<LogInPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

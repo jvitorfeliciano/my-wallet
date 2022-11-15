@@ -2,18 +2,18 @@ import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import Logo from "../../components/Logo/Logo";
+import StyledLink from "../../components/StyledLink/StyledLink";
 
 export default function LogInPage() {
   return (
     <LoginContainer>
       <Logo />
       <form>
-        <Input type="email" placeholder="E-mail"/>
-        <Input type="password" placeholder="Senha"/>
-        <Button>
-            Entrar
-        </Button>
+        <Input type="email" placeholder="E-mail" />
+        <Input type="password" placeholder="Senha" />
+        <Button>Entrar</Button>
       </form>
+      <StyledLink to="/sign-up">Primeira vez? Cadastre-se!</StyledLink>
     </LoginContainer>
   );
 }
@@ -28,3 +28,5 @@ const LoginContainer = styled.main`
   align-items: center;
   padding: 21px;
 `;
+
+
