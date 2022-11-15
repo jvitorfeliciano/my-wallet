@@ -5,6 +5,7 @@ const Input = styled.input`
   width: 100%;
   background: #ffffff;
   border-radius: 5px;
+  border: none;
   padding: 15px;
   color: #000000;
   font-family: "Raleway";
@@ -12,6 +13,13 @@ const Input = styled.input`
   font-weight: 400;
   font-size: 20px;
   margin-bottom: 13px;
+
+  ::placeholder {
+    color: #000000;
+  }
+  :focus {
+    outline: none;
+  }
 `;
 
 export default Input;

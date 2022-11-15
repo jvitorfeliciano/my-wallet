@@ -10,8 +10,5 @@ export default function Logo() {
 }
 
 const Container = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: red;
+  margin-bottom:24px;
 `;

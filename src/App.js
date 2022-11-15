@@ -1,12 +1,12 @@
 import LogInPage from "./pages/LogInPage/LogInPage";
-import GloboStyle from "./style/GloboStyle";
+import GlobalStyle from "./style/GlobalStyle";
 
 function App() {
   return (
-    <div className="App">
-    <GloboStyle/>
-    <LogInPage/>
-    </div>
+    <>
+      <GlobalStyle />
+      <LogInPage />
+    </>
   );
 }
 
