@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import Logo from "../../components/Logo/Logo";
 
@@ -9,6 +10,9 @@ export default function LogInPage() {
       <form>
         <Input type="email" placeholder="E-mail"/>
         <Input type="password" placeholder="Senha"/>
+        <Button>
+            Entrar
+        </Button>
       </form>
     </LoginContainer>
   );
