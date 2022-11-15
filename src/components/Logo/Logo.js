@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import logo from "../../assets/MyWallet.png"
+import logo from "../../assets/MyWallet.png";
 
 export default function Logo() {
   return (
@@ -10,5 +10,5 @@ export default function Logo() {
 }
 
 const Container = styled.section`
-  margin-bottom:24px;
+  margin-bottom: 24px;
 `;

@@ -27,4 +27,7 @@ const Container = styled.main`
   justify-content: center;
   align-items: center;
   padding: 21px;
+  form{
+    width: 100%;
+  }
 `;

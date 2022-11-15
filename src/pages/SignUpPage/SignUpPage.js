@@ -29,4 +29,7 @@ const Container = styled.main`
   justify-content: center;
   background-color: #8c16be;
   padding: 21px;
+  form {
+    width: 100%;
+  }
 `;
