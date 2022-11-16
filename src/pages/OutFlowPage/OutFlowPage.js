@@ -9,10 +9,10 @@ export default function OutflowPage() {
         <h1>Nova Saída</h1>
       </Title>
       <form>
-        <Input type="text "placeholder="Valor" required/>
-        <Input type="text "placeholder="Descrição" required/>
+        <Input type="text " placeholder="Valor" required />
+        <Input type="text " placeholder="Descrição" required />
+        <Button>Salvar saída</Button>
       </form>
-      <Button>Salvar saída</Button>
     </Container>
   );
 }
@@ -34,9 +34,10 @@ const Container = styled.main`
     font-weight: 700;
     font-size: 26px;
     color: #ffffff;
+    margin-top: 14px;
   }
 `;
 const Title = styled.h1`
-  width:100%;
+  width: 100%;
   margin-bottom: 40px;
-`
+`;
