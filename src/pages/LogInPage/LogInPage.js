@@ -13,6 +13,15 @@ export default function LogInPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
+  async function handleLoginForm(e) {
+    e.preventDefault(e);
+    try {
+      const response = await api.logIn(form);
+      console.log(response);
+    } catch (err) {
+      alert(err.response.data.message);
+    }
+  }
   return (
     <Container>
       <Logo />
