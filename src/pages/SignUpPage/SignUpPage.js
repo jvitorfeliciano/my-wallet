@@ -7,6 +7,7 @@ import Logo from "../../components/Logo/Logo";
 import StyledLink from "../../components/StyledLink/StyledLink";
 import api from "../../services/api";
 
+
 export default function SignUpPage() {
   const [form, setForm] = useState({
     name: "",
@@ -14,28 +15,32 @@ export default function SignUpPage() {
     password: "",
     confirmPassword: "",
   });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [isDisabled, setIsDisabled] = useState(false);
 
-  function getLoginFormInfo(e) {
+  function getSignUpFormInfo(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  async function handleLoginForm(e) {
+  async function handleSignUpForm(e) {
     e.preventDefault();
     const isEqual = form.password === form.confirmPassword;
 
     if (isEqual) {
+      setIsDisabled(true);
       const body = {
         name: form.name,
         email: form.email,
         password: form.password,
       };
-     try{
-       await api.signUp(body);
-      navigate("/");
-     }catch(err){
-        alert(err.response.data.message)
-     }
+      try {
+        await api.signUp(body);
+        setIsDisabled(false);
+        navigate("/");
+      } catch (err) {
+        alert(err.response.data.message);
+        setIsDisabled(false);
+      }
     } else {
       alert("As senhas não correspondem");
     }
@@ -44,36 +49,38 @@ export default function SignUpPage() {
   return (
     <Container>
       <Logo />
-      <form onSubmit={handleLoginForm}>
+      <form onSubmit={handleSignUpForm}>
         <Input
-          onChange={getLoginFormInfo}
+          onChange={getSignUpFormInfo}
           type="text"
           placeholder="Nome"
           name="name"
           required
         />
         <Input
-          onChange={getLoginFormInfo}
+          onChange={getSignUpFormInfo}
           type="email"
           placeholder="E-mail"
           name="email"
           required
         />
         <Input
-          onChange={getLoginFormInfo}
+          onChange={getSignUpFormInfo}
           type="password"
           placeholder="Senha"
           name="password"
           required
         />
         <Input
-          onChange={getLoginFormInfo}
+          onChange={getSignUpFormInfo}
           type="password"
           placeholder="Confirme a senha"
           name="confirmPassword"
           required
         />
-        <Button  type="submit">Cadastrar</Button>
+        <Button isDisabled={isDisabled} type="submit">
+          Cadastrar
+        </Button>
       </form>
       <StyledLink to="/">Já tem uma conta? Entre agora!</StyledLink>
     </Container>

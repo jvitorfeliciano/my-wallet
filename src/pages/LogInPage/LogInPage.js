@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
@@ -5,6 +6,9 @@ import Logo from "../../components/Logo/Logo";
 import StyledLink from "../../components/StyledLink/StyledLink";
 
 export default function LogInPage() {
+  const [form, setForm] = useState({email:"", password:""});
+
+
   return (
     <Container>
       <Logo />
