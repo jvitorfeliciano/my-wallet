@@ -1,9 +1,26 @@
 import styled from "styled-components";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import Menu from "./Menu";
+import { useState, useEffect, useContext } from "react";
+import api from "../../services/api";
+import AuthContext from "../../contexts/AuthContext";
 
 export default function ExtractPage() {
+  const  {token}  = useContext(AuthContext);
+  const [exctract, setExtract] = useState(null);
+ 
+   useEffect(() => {
+     api.getExtract(token).then((res)=>{
+      console.log(res);
+      setExtract(res.data);
+     }).catch((err)=>{
+      console.log(err)
+     })
+     
+  }, []);
+  
   return (
+   
     <Container>
       <Header>
         <UserName>Olá, Fulano</UserName>
@@ -11,11 +28,11 @@ export default function ExtractPage() {
       </Header>
       <ExtractInformation>
         <span>
-          {" "}
+
           Não há registro de<br></br> entrada ou saída!
         </span>
       </ExtractInformation>
-      <Menu/>
+      <Menu />
     </Container>
   );
 }

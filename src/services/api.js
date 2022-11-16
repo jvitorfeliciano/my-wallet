@@ -17,9 +17,9 @@ function logIn(body) {
   return promise;
 }
 
-function getExtract(token) {
+ function getExtract(token) {
   const config = createConfig(token);
-  const promise = axios.get(`${BASE_URL}/extract`, config);
+  const promise =  axios.get(`${BASE_URL}/extract`, config);
   return promise;
 }
 

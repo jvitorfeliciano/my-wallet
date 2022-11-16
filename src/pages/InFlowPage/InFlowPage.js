@@ -9,13 +9,14 @@ export default function InflowPage() {
         <h1>Nova entrada</h1>
       </Title>
       <form>
-        <Input type="text "placeholder="Valor" required/>
+        <Input type="number" placeholder="Valor" required/>
         <Input type="text "placeholder="Descrição" required/>
       </form>
       <Button>Salvar entrada</Button>
     </Container>
   );
 }
+
 
 const Container = styled.main`
   height: 100vh;
@@ -28,6 +29,10 @@ const Container = styled.main`
   form {
     width: 100%;
   }
+`;
+const Title = styled.div`
+  width:100%;
+  margin-bottom: 40px;
   h1 {
     font-family: "Raleway";
     font-style: normal;
@@ -36,8 +41,4 @@ const Container = styled.main`
     margin-top:14px;
     color: #ffffff;
   }
-`;
-const Title = styled.h1`
-  width:100%;
-  margin-bottom: 40px;
 `
