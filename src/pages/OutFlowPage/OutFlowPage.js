@@ -1,12 +1,13 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import AuthContext from "../../contexts/AuthContext";
+import api from "../../services/api";
 
 export default function OutflowPage() {
-  const [form, setForm] = useState({ price: "", evenet: "" });
+  const [form, setForm] = useState({ price: "", event: "" });
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -14,12 +15,27 @@ export default function OutflowPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
+  async function handleOutFlowInfoForm(e) {
+    e.preventDefault();
+    const body = {
+      ...form,
+      type: "negative",
+    };
+
+    try {
+      const response = await api.postExtract(body, token);
+      navigate("/extract");
+      console.log(response.data);
+    } catch (err) {
+      console.log(err.response);
+    }
+  }
   return (
     <Container>
       <Title>
         <h1>Nova Saída</h1>
       </Title>
-      <form>
+      <form onSubmit={handleOutFlowInfoForm}>
         <Input
           onChange={getOutFlowInfoForm}
           name="price"
@@ -28,13 +44,13 @@ export default function OutflowPage() {
           required
         />
         <Input
-        name="event"
+          name="event"
           onChange={getOutFlowInfoForm}
           type="text "
           placeholder="Descrição"
           required
         />
-        <Button>Salvar saída</Button>
+        <Button type="submit">Salvar saída</Button>
       </form>
     </Container>
   );
@@ -60,7 +76,7 @@ const Container = styled.main`
     margin-top: 14px;
   }
 `;
-const Title = styled.h1`
+const Title = styled.div`
   width: 100%;
   margin-bottom: 40px;
 `;
