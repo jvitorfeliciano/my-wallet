@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { RiLogoutBoxRLine } from "react-icons/ri";
+import Menu from "./Menu";
 
 export default function ExtractPage() {
   return (
@@ -10,8 +10,12 @@ export default function ExtractPage() {
         <RiLogoutBoxRLine />
       </Header>
       <ExtractInformation>
-        <span> Não há registro de entrada ou saída!</span>
+        <span>
+          {" "}
+          Não há registro de<br></br> entrada ou saída!
+        </span>
       </ExtractInformation>
+      <Menu/>
     </Container>
   );
 }
@@ -55,8 +59,6 @@ const ExtractInformation = styled.section`
   align-items: center;
   justify-content: center;
   span {
-    width: 180px;
-    height: 46px;
     font-family: "Raleway";
     font-style: normal;
     font-weight: 400;
@@ -66,4 +68,3 @@ const ExtractInformation = styled.section`
     text-align: center;
   }
 `;
-
