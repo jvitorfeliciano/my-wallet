@@ -18,7 +18,7 @@ export default function InflowPage() {
     e.preventDefault();
     const body = {
       ...form,
-      type: "negative",
+      type: "positive",
     };
     try {
       const response = await api.postExtract(body, token);
