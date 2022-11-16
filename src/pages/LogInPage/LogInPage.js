@@ -4,6 +4,7 @@ import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import Logo from "../../components/Logo/Logo";
 import StyledLink from "../../components/StyledLink/StyledLink";
+import api from "../../services/api";
 
 export default function LogInPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -12,15 +13,25 @@ export default function LogInPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
- 
-
   return (
     <Container>
       <Logo />
-      <form>
-        <Input onChange={getLoginFormInfo} type="email" placeholder="E-mail" name="email" required />
-        <Input onChange={getLoginFormInfo} type="password" placeholder="Senha" name="password" required />
-        <Button>Entrar</Button>
+      <form onSubmit={handleLoginForm}>
+        <Input
+          onChange={getLoginFormInfo}
+          type="email"
+          placeholder="E-mail"
+          name="email"
+          required
+        />
+        <Input
+          onChange={getLoginFormInfo}
+          type="password"
+          placeholder="Senha"
+          name="password"
+          required
+        />
+        <Button type="submit">Entrar</Button>
       </form>
       <StyledLink to="/sign-up">Primeira vez? Cadastre-se!</StyledLink>
     </Container>

@@ -13,7 +13,7 @@ function signUp(body) {
 }
 
 function logIn(body) {
-  const promise = axios.promise(`${BASE_URL}/sign-in`, body);
+  const promise = axios.post(`${BASE_URL}/sign-in`, body);
   return promise;
 }
 
