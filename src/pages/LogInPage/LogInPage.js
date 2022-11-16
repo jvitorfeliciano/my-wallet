@@ -8,6 +8,7 @@ import api from "../../services/api";
 
 export default function LogInPage() {
   const [form, setForm] = useState({ email: "", password: "" });
+  const [isDisabled, setIsDisabled] = useState(false);
 
   function getLoginFormInfo(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,10 +16,13 @@ export default function LogInPage() {
 
   async function handleLoginForm(e) {
     e.preventDefault(e);
+    setIsDisabled(true);
     try {
       const response = await api.logIn(form);
+      setIsDisabled(false);
       console.log(response);
     } catch (err) {
+      setIsDisabled(false);
       alert(err.response.data.message);
     }
   }
@@ -40,7 +44,7 @@ export default function LogInPage() {
           name="password"
           required
         />
-        <Button type="submit">Entrar</Button>
+        <Button isDisabled={isDisabled} type="submit">Entrar</Button>
       </form>
       <StyledLink to="/sign-up">Primeira vez? Cadastre-se!</StyledLink>
     </Container>
