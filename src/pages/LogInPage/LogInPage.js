@@ -6,15 +6,20 @@ import Logo from "../../components/Logo/Logo";
 import StyledLink from "../../components/StyledLink/StyledLink";
 
 export default function LogInPage() {
-  const [form, setForm] = useState({email:"", password:""});
+  const [form, setForm] = useState({ email: "", password: "" });
 
+  function getLoginFormInfo(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+ 
 
   return (
     <Container>
       <Logo />
       <form>
-        <Input type="email" placeholder="E-mail" required />
-        <Input type="password" placeholder="Senha" required />
+        <Input onChange={getLoginFormInfo} type="email" placeholder="E-mail" name="email" required />
+        <Input onChange={getLoginFormInfo} type="password" placeholder="Senha" name="password" required />
         <Button>Entrar</Button>
       </form>
       <StyledLink to="/sign-up">Primeira vez? Cadastre-se!</StyledLink>
@@ -31,7 +36,7 @@ const Container = styled.main`
   justify-content: center;
   align-items: center;
   padding: 21px;
-  form{
+  form {
     width: 100%;
   }
 `;
