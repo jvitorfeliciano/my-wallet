@@ -4,6 +4,7 @@ import GlobalStyle from "./style/GlobalStyle";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import ExtractPage from "./pages/ExtractPage/ExtractPage";
 import InflowPage from "./pages/InFlowPage/InFlowPage";
+import OutflowPage from "./pages/OutFlowPage/OutFlowPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="extract" element={<ExtractPage/>}/>
         <Route path ="/inflow" element={<InflowPage/>}/>
+        <Route path ="/outflow" element={<OutflowPage/>}/>
       </Routes>
     </BrowserRouter>
   );
