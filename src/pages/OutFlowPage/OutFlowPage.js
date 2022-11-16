@@ -1,17 +1,39 @@
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
+import AuthContext from "../../contexts/AuthContext";
 
 export default function OutflowPage() {
-  
+  const [form, setForm] = useState({ price: "", evenet: "" });
+  const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  function getOutFlowInfoForm(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
   return (
     <Container>
       <Title>
         <h1>Nova Saída</h1>
       </Title>
       <form>
-        <Input type="text " placeholder="Valor" required />
-        <Input type="text " placeholder="Descrição" required />
+        <Input
+          onChange={getOutFlowInfoForm}
+          name="price"
+          type="text "
+          placeholder="Valor"
+          required
+        />
+        <Input
+        name="event"
+          onChange={getOutFlowInfoForm}
+          type="text "
+          placeholder="Descrição"
+          required
+        />
         <Button>Salvar saída</Button>
       </form>
     </Container>
