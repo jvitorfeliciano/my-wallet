@@ -5,17 +5,15 @@ import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import ExtractPage from "./pages/ExtractPage/ExtractPage";
 import InflowPage from "./pages/InFlowPage/InFlowPage";
 import OutflowPage from "./pages/OutFlowPage/OutFlowPage";
-import AuthContext from "./contexts/AuthContext";
 import UserContext from "./contexts/UserContext";
 import { useState } from "react";
 
 function App() {
-  const [userName, setUserName] = useState(undefined);
-  const [token, setToken] = useState(undefined);
-  console.log(token)
+  const [userInfos, setUserInfos] = useState(undefined);
+  console.log(userInfos, "App")
   return (
-    <UserContext.Provider value={{ userName, setUserName }}>
-      <AuthContext.Provider value={{ token, setToken }}>
+    <UserContext.Provider value={{ userInfos, setUserInfos }}>
+    
         <BrowserRouter>
           <GlobalStyle />
           <Routes>
@@ -26,7 +24,7 @@ function App() {
             <Route path="/outflow" element={<OutflowPage />} />
           </Routes>
         </BrowserRouter>
-      </AuthContext.Provider>
+
     </UserContext.Provider>
   );
 }

@@ -3,11 +3,11 @@ import { RiLogoutBoxRLine } from "react-icons/ri";
 import Menu from "./Menu";
 import { useState, useEffect, useContext } from "react";
 import api from "../../services/api";
-import AuthContext from "../../contexts/AuthContext";
 import Extract from "./Extract";
+import UserContext from "../../contexts/UserContext";
 
 export default function ExtractPage() {
-  const { token } = useContext(AuthContext);
+  const { userInfos } = useContext(UserContext);
   const [extract, setExtract] = useState(null);
   const [balance, setBalance] = useState(0);
 
@@ -28,7 +28,7 @@ export default function ExtractPage() {
   }
   useEffect(() => {
     api
-      .getExtract(token)
+      .getExtract(userInfos.token)
       .then((res) => {
         console.log(res);
         computeCashValue(res.data);

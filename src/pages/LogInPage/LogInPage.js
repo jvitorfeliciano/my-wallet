@@ -5,15 +5,14 @@ import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import Logo from "../../components/Logo/Logo";
 import StyledLink from "../../components/StyledLink/StyledLink";
-import AuthContext from "../../contexts/AuthContext";
 import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
 
 export default function LogInPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [isDisabled, setIsDisabled] = useState(false);
-  const { setToken } = useContext(AuthContext);
-  const { setUserName } = useContext(UserContext);
+  const { setUserInfos } = useContext(UserContext);
+  console.log(setUserInfos)
   const navigate = useNavigate();
 
   function getLoginFormInfo(e) {
@@ -27,14 +26,13 @@ export default function LogInPage() {
       .logIn(form)
       .then((res) => {
         setIsDisabled(false);
-        setToken(res.data.token);
-        setUserName(res.data.name);
+        setUserInfos(res.data)
         navigate("/extract");
         console.log(res);
       })
       .catch((err) => {
         setIsDisabled(false);
-        alert(err.response.data.message);
+        alert(err.response.data.message); 
       });
   }
 

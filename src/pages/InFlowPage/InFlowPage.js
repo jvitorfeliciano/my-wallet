@@ -3,12 +3,12 @@ import {  useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
-import AuthContext from "../../contexts/AuthContext";
+import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
 
 export default function InflowPage() {
   const [form, setForm] = useState({ price:"", event:"" });
-  const { token } = useContext(AuthContext);
+  const {userInfos} = useContext(UserContext);
   const navigate = useNavigate()
   function getInflowFormInfo(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,7 +21,7 @@ export default function InflowPage() {
       type: "positive",
     };
     try {
-      const response = await api.postExtract(body, token);
+      const response = await api.postExtract(body, userInfos.token);
       navigate("/extract");
       console.log(response);
     } catch (err) {
