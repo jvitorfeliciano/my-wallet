@@ -7,7 +7,6 @@ import Logo from "../../components/Logo/Logo";
 import StyledLink from "../../components/StyledLink/StyledLink";
 import api from "../../services/api";
 
-
 export default function SignUpPage() {
   const [form, setForm] = useState({
     name: "",
@@ -22,10 +21,9 @@ export default function SignUpPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  async function handleSignUpForm(e) {
+  function handleSignUpForm(e) {
     e.preventDefault();
     const isEqual = form.password === form.confirmPassword;
-
     if (isEqual) {
       setIsDisabled(true);
       const body = {
@@ -33,14 +31,16 @@ export default function SignUpPage() {
         email: form.email,
         password: form.password,
       };
-      try {
-        await api.signUp(body);
-        setIsDisabled(false);
-        navigate("/");
-      } catch (err) {
-        alert(err.response.data.message);
-        setIsDisabled(false);
-      }
+      api
+        .signUp(body)
+        .then((res) => {
+          setIsDisabled(false);
+          navigate("/");
+        })
+        .catch((err) => {
+          alert(err.response.data.message);
+          setIsDisabled(false);
+        });
     } else {
       alert("As senhas não correspondem");
     }

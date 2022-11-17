@@ -14,27 +14,30 @@ export default function LogInPage() {
   const [isDisabled, setIsDisabled] = useState(false);
   const { setToken } = useContext(AuthContext);
   const { setUserName } = useContext(UserContext);
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
   function getLoginFormInfo(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
-
-  async function handleLoginForm(e) {
+  function handleLoginForm(e) {
     e.preventDefault(e);
     setIsDisabled(true);
-    try {
-      const response = await api.logIn(form);
-      setIsDisabled(false);
-      setToken(response.data.token);
-      setUserName(response.data.name);
-      navigate("/extract");
-      console.log(response);
-    } catch (err) {
-      setIsDisabled(false);
-      alert(err.response.data.message);
-    }
+
+    api
+      .logIn(form)
+      .then((res) => {
+        setIsDisabled(false);
+        setToken(res.data.token);
+        setUserName(res.data.name);
+        navigate("/extract");
+        console.log(res);
+      })
+      .catch((err) => {
+        setIsDisabled(false);
+        alert(err.response.data.message);
+      });
   }
+
   return (
     <Container>
       <Logo />

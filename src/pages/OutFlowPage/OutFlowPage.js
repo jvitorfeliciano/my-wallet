@@ -8,14 +8,14 @@ import api from "../../services/api";
 
 export default function OutflowPage() {
   const [form, setForm] = useState({ price: "", event: "" });
-  const { token } = useContext(AuthContext);
+  const {token} = useContext(AuthContext);
   const navigate = useNavigate();
 
   function getOutFlowInfoForm(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  async function handleOutFlowInfoForm(e) {
+  async function handleOutFlowForm(e) {
     e.preventDefault();
     const body = {
       ...form,
@@ -35,11 +35,11 @@ export default function OutflowPage() {
       <Title>
         <h1>Nova Saída</h1>
       </Title>
-      <form onSubmit={handleOutFlowInfoForm}>
+      <form onSubmit={handleOutFlowForm}>
         <Input
           onChange={getOutFlowInfoForm}
           name="price"
-          type="text "
+          type="number"
           placeholder="Valor"
           required
         />

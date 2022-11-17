@@ -4,33 +4,68 @@ import Menu from "./Menu";
 import { useState, useEffect, useContext } from "react";
 import api from "../../services/api";
 import AuthContext from "../../contexts/AuthContext";
+import Extract from "./Extract";
 
 export default function ExtractPage() {
-  const  {token}  = useContext(AuthContext);
-  const [exctract, setExtract] = useState(null);
- 
-   useEffect(() => {
-     api.getExtract(token).then((res)=>{
-      console.log(res);
-      setExtract(res.data);
-     }).catch((err)=>{
-      console.log(err)
-     })
-     
+  const { token } = useContext(AuthContext);
+  const [extract, setExtract] = useState(null);
+  const [balance, setBalance] = useState(0);
+
+  function computeCashValue(arr) {
+    const prices = arr.map((e) => {
+      if (e.type === "positive") {
+        return Number(e.price);
+      } else if (e.type === "negative") {
+        return Number(e.price) * -1;
+      }
+    });
+    const totalBalance = prices.reduce(
+      (element, current) => element + current,
+      0
+    );
+    setBalance(totalBalance);
+    console.log(prices, totalBalance);
+  }
+  useEffect(() => {
+    api
+      .getExtract(token)
+      .then((res) => {
+        console.log(res);
+        computeCashValue(res.data);
+        setExtract(res.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   }, []);
-  
+
+  if (!extract) {
+    return <div>Carregando</div>;
+  }
+
   return (
-   
     <Container>
       <Header>
         <UserName>Olá, Fulano</UserName>
         <RiLogoutBoxRLine />
       </Header>
-      <ExtractInformation>
-        <span>
-
-          Não há registro de<br></br> entrada ou saída!
-        </span>
+      {console.log(extract.length)}
+      <ExtractInformation format={extract.length}>
+        {extract.length === 0 && (
+          <span>
+            Não há registro de<br></br> entrada ou saída!
+          </span>
+        )}
+        {extract.length !== 0 &&
+          extract.map((e) => (
+            <Extract
+              key={e._id}
+              date={e.date}
+              event={e.event}
+              type={e.type}
+              price={e.price}
+            />
+          ))}
       </ExtractInformation>
       <Menu />
     </Container>
@@ -71,10 +106,10 @@ const ExtractInformation = styled.section`
   background: #ffffff;
   border-radius: 5px;
   margin-top: 22px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: scroll;
+  ${(props) => (props.format === 0 ? "display: flex;" : "")}
+  ${(props) => (props.format === 0 ? "align-items: center;" : "")}
+  ${(props) => (props.format === 0 ? "justify-content: center;" : "")}
   span {
     font-family: "Raleway";
     font-style: normal;
