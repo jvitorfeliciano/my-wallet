@@ -42,20 +42,20 @@ export default function ExtractPage() {
   if (!extract) {
     return <div>Carregando</div>;
   }
-
+  console.log(balance);
   return (
     <Container>
       <Header>
         <UserName>Olá, Fulano</UserName>
         <RiLogoutBoxRLine />
       </Header>
-      {console.log(extract.length)}
       <ExtractInformation format={extract.length}>
         {extract.length === 0 && (
           <span>
             Não há registro de<br></br> entrada ou saída!
           </span>
         )}
+
         {extract.length !== 0 &&
           extract.map((e) => (
             <Extract
@@ -67,6 +67,12 @@ export default function ExtractPage() {
             />
           ))}
       </ExtractInformation>
+      {extract.length !== 0 && (
+        <BalanceBox>
+          <Legend>SALDO</Legend>
+          <Balance color={balance}>{balance}</Balance>
+        </BalanceBox>
+      )}
       <Menu />
     </Container>
   );
@@ -80,6 +86,7 @@ const Container = styled.main`
   align-items: center;
   background-color: #8c16be;
   padding: 21px;
+  position:relative;
 `;
 const Header = styled.section`
   width: 100%;
@@ -103,11 +110,11 @@ const ExtractInformation = styled.section`
   width: 100%;
   height: 446px;
   background: #ffffff;
-  background: #ffffff;
   border-radius: 5px;
   margin-top: 22px;
   overflow: scroll;
   ${(props) => (props.format === 0 ? "display: flex;" : "")}
+  ${(props) => (props.format === 0 ? "flex-direction: column;" : "")}
   ${(props) => (props.format === 0 ? "align-items: center;" : "")}
   ${(props) => (props.format === 0 ? "justify-content: center;" : "")}
   span {
@@ -120,3 +127,26 @@ const ExtractInformation = styled.section`
     text-align: center;
   }
 `;
+const BalanceBox = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding:12px;
+  top: 430px;
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 17px;
+  background: #ffffff;
+  border-radius: 5px;
+  margin-top: 10px;
+`;
+
+const Legend = styled.div`
+  color: #000000;
+`;
+
+const Balance = styled.div`
+  color: ${props=> props.color > 0 ?"#03AC00": "#C70000"};
+`;
+
