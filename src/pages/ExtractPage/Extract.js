@@ -18,14 +18,16 @@ export default function Extract({
   const [color, setColor] = useState();
   const { userInfos } = useContext(UserContext);
   const [isLoading, setIsloading] = useState(false);
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
-  function goToEditScreen(type,id){
-       if(type ==="positive"){
-          navigate("/edit/inflow",{state:id})
-      } 
-      
+  function goToEditScreen(type, id) {
+    if (type === "positive") {
+      navigate("/edit/inflow", { state: id });
+    } else if (type === "negative") {
+      navigate("/edit/outflow", { state: id });
+    }
   }
+  
   useEffect(() => {
     if (type === "negative") {
       setColor("#C70000");
@@ -54,7 +56,9 @@ export default function Extract({
     <Container>
       <Left>
         <Day>{date}</Day>
-        <Description onClick={()=>goToEditScreen(type,id)}>{event}</Description>
+        <Description onClick={() => goToEditScreen(type, id)}>
+          {event}
+        </Description>
       </Left>
       <Right>
         <Price color={color}>

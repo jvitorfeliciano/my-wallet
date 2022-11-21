@@ -8,6 +8,7 @@ import UserContext from "./contexts/UserContext";
 import { useEffect, useState } from "react";
 import LogInPage from "./pages/LogInPage/LogInPage";
 import EditInflowPage from "./pages/EditInflowPage/EditInfowPage";
+import EditOutflowPage from "./pages/EditOutFlowPage/EditOutFlowPage";
 
 function App() {
   const [userInfos, setUserInfos] = useState(undefined);
@@ -24,11 +25,12 @@ function App() {
         <GlobalStyle />
         <Routes>
           <Route path="/" element={<LogInPage />} />
-          <Route path="/extract" element={<ExtractPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/extract" element={<ExtractPage />} />
           <Route path="/inflow" element={<InflowPage />} />
           <Route path="/outflow" element={<OutflowPage />} />
           <Route path="/edit/inflow" element={<EditInflowPage/>}/>
+          <Route path="/edit/outflow" element={<EditOutflowPage/>}/>
         </Routes>
       </BrowserRouter>
     </UserContext.Provider>
@@ -36,3 +38,4 @@ function App() {
 }
 
 export default App;
+
