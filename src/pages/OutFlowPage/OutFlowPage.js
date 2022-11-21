@@ -1,14 +1,16 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
+import Loading from "../../components/Loading/Loading";
 import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
 
 export default function OutflowPage() {
   const [form, setForm] = useState({ price: "", event: "" });
-  const {userInfos} = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const { userInfos } = useContext(UserContext);
   const navigate = useNavigate();
 
   function getOutFlowInfoForm(e) {
@@ -17,16 +19,19 @@ export default function OutflowPage() {
 
   async function handleOutFlowForm(e) {
     e.preventDefault();
+    setIsLoading(true);
     const body = {
       ...form,
       type: "negative",
     };
 
     try {
-      const response = await api.postExtract(body, userInfos.token);
+      const response = await api.postExtract(userInfos.token, body);
+      setIsLoading(false);
       navigate("/extract");
       console.log(response.data);
     } catch (err) {
+      setIsLoading(false);
       console.log(err.response);
     }
   }
@@ -42,6 +47,8 @@ export default function OutflowPage() {
           type="number"
           placeholder="Valor"
           required
+          step="0.01"
+          min="0"
         />
         <Input
           name="event"
@@ -50,7 +57,9 @@ export default function OutflowPage() {
           placeholder="Descrição"
           required
         />
-        <Button type="submit">Salvar saída</Button>
+        <Button type="submit" isLoading={isLoading}>
+          {isLoading ? <Loading size={30} color={"white"} /> : "Salvar saída"}
+        </Button>
       </form>
     </Container>
   );

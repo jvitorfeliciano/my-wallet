@@ -13,8 +13,11 @@ const Button = styled.button`
   color: #FFFFFF;
   border:none;
   padding:11px;
-  opacity:${props => props.isDisabled ? "0.6":"1" };
-  pointer-events: ${props => props.isDisabled ? "none":"auto" };
+  opacity:${props => props.isLoading ? "0.6":"1" };
+  pointer-events: ${props => props.isLoading ? "none":"auto" };
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export default Button;

@@ -5,11 +5,15 @@ import { useState, useEffect, useContext } from "react";
 import api from "../../services/api";
 import Extract from "./Extract";
 import UserContext from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
+import Loading from "../../components/Loading/Loading";
 
 export default function ExtractPage() {
   const { userInfos } = useContext(UserContext);
   const [extract, setExtract] = useState(null);
   const [balance, setBalance] = useState(0);
+  const [update, setUpdate] = useState(false);
+  const navigate = useNavigate();
 
   function computeCashValue(arr) {
     const prices = arr.map((e) => {
@@ -20,59 +24,84 @@ export default function ExtractPage() {
       }
     });
     const totalBalance = prices.reduce(
-      (element, current) => element + current,
+      (initialValue, element) => initialValue + element,
       0
     );
     setBalance(totalBalance);
-    console.log(prices, totalBalance);
   }
-  useEffect(() => {
-    api
-      .getExtract(userInfos.token)
-      .then((res) => {
-        console.log(res);
-        computeCashValue(res.data);
-        setExtract(res.data);
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  }, []);
 
-  if (!extract) {
-    return <div>Carregando</div>;
+  useEffect(() => {
+    if (userInfos) {
+      api
+        .getExtract(userInfos.token)
+        .then((res) => {
+          console.log(res);
+          computeCashValue(res.data);
+          setExtract(res.data);
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    }
+  }, [userInfos, update]);
+
+  function logOut() {
+    navigate("/");
+    localStorage.removeItem("userInfos");
   }
-  console.log(balance);
+  if (!extract) {
+    return (
+      <Container>
+        <Loading size={50} color={"white"}/>
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <Header>
-        <UserName>Olá, Fulano</UserName>
-        <RiLogoutBoxRLine />
+        <UserName>Olá, {userInfos.name}</UserName>
+        <RiLogoutBoxRLine onClick={logOut} />
       </Header>
-      <ExtractInformation format={extract.length}>
-        {extract.length === 0 && (
-          <span>
-            Não há registro de<br></br> entrada ou saída!
-          </span>
-        )}
+      <ExtractInformation>
+        <Extracts formation={extract.length}>
+          {extract.length === 0 && (
+            <span>
+              Não há registro de<br></br> entrada ou saída!
+            </span>
+          )}
+          {extract.length !== 0 &&
+            extract.map((e) => (
+              <Extract
+                key={e._id}
+                date={e.date}
+                event={e.event}
+                type={e.type}
+                price={e.price}
+                id={e._id}
+                setUpdate={setUpdate}
+                update={update}
+              />
+            ))}
+        </Extracts>
 
-        {extract.length !== 0 &&
-          extract.map((e) => (
-            <Extract
-              key={e._id}
-              date={e.date}
-              event={e.event}
-              type={e.type}
-              price={e.price}
-            />
-          ))}
+        {extract.length !== 0 && (
+          <BalanceBox>
+            <Legend>SALDO</Legend>
+            <Balance color={balance}>
+              {balance
+                .toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL",
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+                .replace("-", "")}
+            </Balance>
+          </BalanceBox>
+        )}
       </ExtractInformation>
-      {extract.length !== 0 && (
-        <BalanceBox>
-          <Legend>SALDO</Legend>
-          <Balance color={balance}>{balance}</Balance>
-        </BalanceBox>
-      )}
+
       <Menu />
     </Container>
   );
@@ -84,9 +113,9 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   background-color: #8c16be;
   padding: 21px;
-  position:relative;
 `;
 const Header = styled.section`
   width: 100%;
@@ -99,6 +128,7 @@ const Header = styled.section`
   }
 `;
 const UserName = styled.h1`
+  margin-top: 10px;
   font-family: "Raleway";
   font-style: normal;
   font-weight: 700;
@@ -112,11 +142,17 @@ const ExtractInformation = styled.section`
   background: #ffffff;
   border-radius: 5px;
   margin-top: 22px;
+  padding: 15px 12px 15px 12px;
+`;
+
+const Extracts = styled.div`
+  width: 100%;
+  height: 400px;
   overflow: scroll;
-  ${(props) => (props.format === 0 ? "display: flex;" : "")}
-  ${(props) => (props.format === 0 ? "flex-direction: column;" : "")}
-  ${(props) => (props.format === 0 ? "align-items: center;" : "")}
-  ${(props) => (props.format === 0 ? "justify-content: center;" : "")}
+  ${(props) => (props.formation === 0 ? "display: flex;" : "")}
+  ${(props) => (props.formation === 0 ? "flex-direction: column;" : "")}
+  ${(props) => (props.formation === 0 ? "align-items: center;" : "")}
+  ${(props) => (props.formation === 0 ? "justify-content: center;" : "")}
   span {
     font-family: "Raleway";
     font-style: normal;
@@ -127,19 +163,17 @@ const ExtractInformation = styled.section`
     text-align: center;
   }
 `;
+
 const BalanceBox = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding:12px;
-  top: 430px;
+  background: #ffffff;
+  margin-top: 4px;
   font-family: "Raleway";
   font-style: normal;
   font-weight: 700;
   font-size: 17px;
-  background: #ffffff;
-  border-radius: 5px;
-  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Legend = styled.div`
@@ -147,6 +181,5 @@ const Legend = styled.div`
 `;
 
 const Balance = styled.div`
-  color: ${props=> props.color > 0 ?"#03AC00": "#C70000"};
+  color: ${(props) => (props.color > 0 ? "#03AC00" : "#C70000")};
 `;
-

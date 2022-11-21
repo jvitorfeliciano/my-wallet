@@ -1,5 +1,5 @@
-import { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { useNavigate,  useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
@@ -7,17 +7,19 @@ import Loading from "../../components/Loading/Loading";
 import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
 
-export default function InflowPage() {
+export default function EditInflowPage() {
   const [form, setForm] = useState({ price: "", event: "" });
   const [isLoading, setIsLoading] = useState(false);
   const { userInfos } = useContext(UserContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  function getInflowFormInfo(e) {
+   console.log(location.state)
+  function getEditInflowFormInfo(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  async function handleInflowForm(e) {
+  async function handleEditInflowForm(e) {
     e.preventDefault();
     setIsLoading(true);
 
@@ -27,7 +29,7 @@ export default function InflowPage() {
     };
     console.log(body);
     try {
-      const response = await api.postExtract(userInfos.token,body);
+      const response = await api.editExtract(userInfos.token,body,location.state);
       setIsLoading(false);
       navigate("/extract");
       console.log("testandoo");
@@ -41,11 +43,11 @@ export default function InflowPage() {
   return (
     <Container>
       <Title>
-        <h1>Nova entrada</h1>
+        <h1>Editar entrada</h1>
       </Title>
-      <form onSubmit={handleInflowForm}>
+      <form onSubmit={handleEditInflowForm}>
         <Input
-          onChange={getInflowFormInfo}
+          onChange={getEditInflowFormInfo}
           name="price"
           type="number"
           placeholder="Valor"
@@ -55,7 +57,7 @@ export default function InflowPage() {
         />
 
         <Input
-          onChange={getInflowFormInfo}
+          onChange={getEditInflowFormInfo}
           name="event"
           type="text "
           placeholder="Descrição"
@@ -63,7 +65,7 @@ export default function InflowPage() {
         />
 
         <Button type="submit" isLoading={isLoading}>
-          {isLoading ? <Loading size={30} color={"white"} /> : "Salvar entrada"}
+          {isLoading ? <Loading size={30} color={"white"} /> : "Atualizar entrada"}
         </Button>
       </form>
     </Container>

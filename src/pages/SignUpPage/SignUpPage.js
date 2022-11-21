@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
+import Loading from "../../components/Loading/Loading";
 import Logo from "../../components/Logo/Logo";
 import StyledLink from "../../components/StyledLink/StyledLink";
 import api from "../../services/api";
@@ -15,32 +16,30 @@ export default function SignUpPage() {
     confirmPassword: "",
   });
   const navigate = useNavigate();
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   function getSignUpFormInfo(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  function handleSignUpForm(e) {
+  async function handleSignUpForm(e) {
     e.preventDefault();
     const isEqual = form.password === form.confirmPassword;
     if (isEqual) {
-      setIsDisabled(true);
+      setIsLoading(true);
       const body = {
         name: form.name,
         email: form.email,
         password: form.password,
       };
-      api
-        .signUp(body)
-        .then((res) => {
-          setIsDisabled(false);
-          navigate("/");
-        })
-        .catch((err) => {
-          alert(err.response.data.message);
-          setIsDisabled(false);
-        });
+      try {
+        await api.signUp(body);
+        setIsLoading(false);
+        navigate("/");
+      } catch (err) {
+        alert(err.response.data.message);
+        setIsLoading(false);
+      }
     } else {
       alert("As senhas não correspondem");
     }
@@ -78,8 +77,8 @@ export default function SignUpPage() {
           name="confirmPassword"
           required
         />
-        <Button isDisabled={isDisabled} type="submit">
-          Cadastrar
+        <Button isLoading={isLoading} type="submit">
+          {isLoading ? <Loading size={30} color={"white"} /> : "Cadastrar"}
         </Button>
       </form>
       <StyledLink to="/">Já tem uma conta? Entre agora!</StyledLink>

@@ -1,22 +1,76 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import UserContext from "../../contexts/UserContext";
+import api from "../../services/api";
+import { TiDeleteOutline } from "react-icons/ti";
+import Loading from "../../components/Loading/Loading";
+import { useNavigate } from "react-router-dom";
 
-export default function Extract({ date, type, price, event }) {
+export default function Extract({
+  date,
+  type,
+  price,
+  event,
+  id,
+  setUpdate,
+  update,
+}) {
   const [color, setColor] = useState();
+  const { userInfos } = useContext(UserContext);
+  const [isLoading, setIsloading] = useState(false);
+  const navigate =useNavigate();
+
+  function goToEditScreen(type,id){
+       if(type ==="positive"){
+          navigate("/edit/inflow",{state:id})
+      } 
+      
+  }
   useEffect(() => {
     if (type === "negative") {
-      setColor("#c70000");
+      setColor("#C70000");
     } else if (type === "positive") {
-      setColor("Green");
+      setColor("#03AC00");
     }
   }, []);
+
+  async function removeExtract(id) {
+    const continueDeletion = window.confirm("Deseja deletar o extrato?");
+    if (continueDeletion) {
+      setIsloading(true);
+      try {
+        const sucesso = await api.deleteExtract(userInfos.token, id);
+        setUpdate(!update);
+        setIsloading(false);
+        console.log(sucesso);
+      } catch (err) {
+        console.log(err.response);
+        setIsloading(false);
+      }
+    }
+  }
+
   return (
     <Container>
       <Left>
         <Day>{date}</Day>
-        <Description>{event}</Description>
+        <Description onClick={()=>goToEditScreen(type,id)}>{event}</Description>
       </Left>
-      <Price color={color}>{price}</Price>
+      <Right>
+        <Price color={color}>
+          {Number(price).toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL",
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
+        </Price>
+        {isLoading ? (
+          <Loading size={10} color={"gray"} />
+        ) : (
+          <TiDeleteOutline onClick={() => removeExtract(id)} />
+        )}
+      </Right>
     </Container>
   );
 }
@@ -30,7 +84,7 @@ const Container = styled.div`
   font-size: 16px;
   display: flex;
   justify-content: space-between;
-  padding: 22px 12px 0 12px;
+  margin-bottom: 12px;
 `;
 
 const Day = styled.div`
@@ -45,9 +99,17 @@ const Description = styled.div`
 `;
 
 const Price = styled.div`
-  color:${props=>props.color};
-  margin-left: 10px;
+  color: ${(props) => props.color};
+  margin: 0 10px;
 `;
 const Left = styled.div`
   display: flex;
+  align-items: center;
+`;
+const Right = styled.div`
+  display: flex;
+  align-items: center;
+  svg {
+    color: #c6c6c6;
+  }
 `;

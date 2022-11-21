@@ -1,8 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
+import Loading from "../../components/Loading/Loading";
 import Logo from "../../components/Logo/Logo";
 import StyledLink from "../../components/StyledLink/StyledLink";
 import UserContext from "../../contexts/UserContext";
@@ -10,30 +11,32 @@ import api from "../../services/api";
 
 export default function LogInPage() {
   const [form, setForm] = useState({ email: "", password: "" });
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { setUserInfos } = useContext(UserContext);
-  console.log(setUserInfos)
   const navigate = useNavigate();
+
+  function saveLocalStorage(obj) {
+    localStorage.setItem("userInfos", JSON.stringify(obj));
+  }
 
   function getLoginFormInfo(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
-  function handleLoginForm(e) {
-    e.preventDefault(e);
-    setIsDisabled(true);
 
-    api
-      .logIn(form)
-      .then((res) => {
-        setIsDisabled(false);
-        setUserInfos(res.data)
-        navigate("/extract");
-        console.log(res);
-      })
-      .catch((err) => {
-        setIsDisabled(false);
-        alert(err.response.data.message); 
-      });
+  async function handleLoginForm(e) {
+    e.preventDefault(e);
+    setIsLoading(true);
+    try {
+      const res = await api.logIn(form);
+      setIsLoading(false);
+      setUserInfos(res.data);
+      saveLocalStorage(res.data);
+      navigate("/extract");
+      console.log(res);
+    } catch (err) {
+      setIsLoading(false);
+      alert(err.response.data.message);
+    }
   }
 
   return (
@@ -54,8 +57,8 @@ export default function LogInPage() {
           name="password"
           required
         />
-        <Button isDisabled={isDisabled} type="submit">
-          Entrar
+        <Button isLoading={isLoading} type="submit">
+          {isLoading ? <Loading size={30} color={"white"}/> : "Entrar"}
         </Button>
       </form>
       <StyledLink to="/sign-up">Primeira vez? Cadastre-se!</StyledLink>
