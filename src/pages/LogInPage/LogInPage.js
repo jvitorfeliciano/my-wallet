@@ -15,14 +15,14 @@ export default function LogInPage() {
   const { setUserInfos } = useContext(UserContext);
   const navigate = useNavigate();
 
-   const storedData = JSON.parse(localStorage.getItem("userInfos"));
+  const storedData = JSON.parse(localStorage.getItem("userInfos"));
 
   useEffect(() => {
     if (storedData) {
       navigate("/extract");
     }
-  }, []); 
-  
+  }, []);
+
   function saveLocalStorage(obj) {
     localStorage.setItem("userInfos", JSON.stringify(obj));
   }
@@ -40,13 +40,12 @@ export default function LogInPage() {
       setUserInfos(res.data);
       saveLocalStorage(res.data);
       navigate("/extract");
-      console.log(res);
     } catch (err) {
       setIsLoading(false);
       alert(err.response.data.message);
     }
   }
-  if(storedData) {
+  if (storedData) {
     return;
   }
   return (

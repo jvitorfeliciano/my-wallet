@@ -21,12 +21,10 @@ export default function ExtractPage() {
       api
         .getExtract(userInfos.token)
         .then((res) => {
-          console.log(res);
           setExtract(res.data.extracts);
           setBalance(res.data.balance);
         })
         .catch((err) => {
-          console.log(err.response)
           alert(err.response.data.message);
         });
     }
@@ -38,7 +36,7 @@ export default function ExtractPage() {
       localStorage.removeItem("userInfos");
       navigate("/");
     } catch (err) {
-      console.log(err);
+      alert(err.response.data.message);
     }
   }
   if (!extract) {

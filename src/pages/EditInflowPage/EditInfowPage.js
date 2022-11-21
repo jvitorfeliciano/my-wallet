@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useNavigate,  useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
@@ -14,7 +14,6 @@ export default function EditInflowPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-   console.log(location.state)
   function getEditInflowFormInfo(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
@@ -27,16 +26,17 @@ export default function EditInflowPage() {
       ...form,
       type: "positive",
     };
-    console.log(body);
     try {
-      const response = await api.editExtract(userInfos.token,body,location.state);
+       await api.editExtract(
+        userInfos.token,
+        body,
+        location.state
+      );
       setIsLoading(false);
       navigate("/extract");
-      console.log("testandoo");
-      console.log(response);
     } catch (err) {
       setIsLoading(false);
-      console.log(err.response.data);
+      alert(err.response.data.message);
     }
   }
 
@@ -65,7 +65,11 @@ export default function EditInflowPage() {
         />
 
         <Button type="submit" isLoading={isLoading}>
-          {isLoading ? <Loading size={30} color={"white"} /> : "Atualizar entrada"}
+          {isLoading ? (
+            <Loading size={30} color={"white"} />
+          ) : (
+            "Atualizar entrada"
+          )}
         </Button>
       </form>
     </Container>

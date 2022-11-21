@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
@@ -32,7 +32,7 @@ export default function OutflowPage() {
       console.log(response.data);
     } catch (err) {
       setIsLoading(false);
-      console.log(err.response);
+      alert(err.response.data.message);
     }
   }
   return (

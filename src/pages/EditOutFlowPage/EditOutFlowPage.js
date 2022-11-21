@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useNavigate,  useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
@@ -8,13 +8,12 @@ import UserContext from "../../contexts/UserContext";
 import api from "../../services/api";
 
 export default function EditOutflowPage() {
-  const [form, setForm] = useState({price: "", event: "" });
+  const [form, setForm] = useState({ price: "", event: "" });
   const [isLoading, setIsLoading] = useState(false);
   const { userInfos } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
 
-   console.log(location.state)
   function getEditOutflowFormInfo(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
@@ -29,14 +28,12 @@ export default function EditOutflowPage() {
     };
     console.log(body);
     try {
-      const response = await api.editExtract(userInfos.token,body,location.state);
+      await api.editExtract(userInfos.token, body, location.state);
       setIsLoading(false);
       navigate("/extract");
-      console.log("testandoo");
-      console.log(response);
     } catch (err) {
       setIsLoading(false);
-      console.log(err.response.data);
+      alert(err.response.data.message);
     }
   }
 
@@ -65,7 +62,11 @@ export default function EditOutflowPage() {
         />
 
         <Button type="submit" isLoading={isLoading}>
-          {isLoading ? <Loading size={30} color={"white"} /> : "Atualizar saída"}
+          {isLoading ? (
+            <Loading size={30} color={"white"} />
+          ) : (
+            "Atualizar saída"
+          )}
         </Button>
       </form>
     </Container>
