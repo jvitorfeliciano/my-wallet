@@ -7,6 +7,7 @@ import Extract from "./Extract";
 import UserContext from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading/Loading";
+import BalanceBox from "./BalanceBox";
 
 export default function ExtractPage() {
   const { userInfos } = useContext(UserContext);
@@ -15,44 +16,35 @@ export default function ExtractPage() {
   const [update, setUpdate] = useState(false);
   const navigate = useNavigate();
 
-  function computeCashValue(arr) {
-    const prices = arr.map((e) => {
-      if (e.type === "positive") {
-        return Number(e.price);
-      } else if (e.type === "negative") {
-        return Number(e.price) * -1;
-      }
-    });
-    const totalBalance = prices.reduce(
-      (initialValue, element) => initialValue + element,
-      0
-    );
-    setBalance(totalBalance);
-  }
-
   useEffect(() => {
     if (userInfos) {
       api
         .getExtract(userInfos.token)
         .then((res) => {
           console.log(res);
-          computeCashValue(res.data);
-          setExtract(res.data);
+          setExtract(res.data.extracts);
+          setBalance(res.data.balance);
         })
         .catch((err) => {
-          console.log(err.response);
+          console.log(err.response)
+          alert(err.response.data.message);
         });
     }
   }, [userInfos, update]);
 
-  function logOut() {
-    navigate("/");
-    localStorage.removeItem("userInfos");
+  async function logOut() {
+    try {
+      await api.deleteSession(userInfos.token);
+      localStorage.removeItem("userInfos");
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
   }
   if (!extract) {
     return (
       <Container>
-        <Loading size={50} color={"white"}/>
+        <Loading size={50} color={"white"} />
       </Container>
     );
   }
@@ -85,21 +77,7 @@ export default function ExtractPage() {
             ))}
         </Extracts>
 
-        {extract.length !== 0 && (
-          <BalanceBox>
-            <Legend>SALDO</Legend>
-            <Balance color={balance}>
-              {balance
-                .toLocaleString("pt-br", {
-                  style: "currency",
-                  currency: "BRL",
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })
-                .replace("-", "")}
-            </Balance>
-          </BalanceBox>
-        )}
+        {extract.length !== 0 && <BalanceBox balance={balance} />}
       </ExtractInformation>
 
       <Menu />
@@ -162,24 +140,4 @@ const Extracts = styled.div`
     color: #868686;
     text-align: center;
   }
-`;
-
-const BalanceBox = styled.div`
-  width: 100%;
-  background: #ffffff;
-  margin-top: 4px;
-  font-family: "Raleway";
-  font-style: normal;
-  font-weight: 700;
-  font-size: 17px;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Legend = styled.div`
-  color: #000000;
-`;
-
-const Balance = styled.div`
-  color: ${(props) => (props.color > 0 ? "#03AC00" : "#C70000")};
 `;

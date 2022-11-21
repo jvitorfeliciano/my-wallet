@@ -16,8 +16,9 @@ export default function Extract({
   update,
 }) {
   const [color, setColor] = useState();
-  const { userInfos } = useContext(UserContext);
   const [isLoading, setIsloading] = useState(false);
+  const { userInfos } = useContext(UserContext);
+
   const navigate = useNavigate();
 
   function goToEditScreen(type, id) {
@@ -27,7 +28,7 @@ export default function Extract({
       navigate("/edit/outflow", { state: id });
     }
   }
-  
+
   useEffect(() => {
     if (type === "negative") {
       setColor("#C70000");
@@ -62,7 +63,7 @@ export default function Extract({
       </Left>
       <Right>
         <Price color={color}>
-          {Number(price).toLocaleString("pt-br", {
+          {price.toLocaleString("pt-br", {
             style: "currency",
             currency: "BRL",
             minimumFractionDigits: 2,
@@ -100,6 +101,8 @@ const Description = styled.div`
   color: #000000;
   height: auto;
   word-break: break-word;
+  line-height: 20px;
+  letter-spacing: 1px;
 `;
 
 const Price = styled.div`

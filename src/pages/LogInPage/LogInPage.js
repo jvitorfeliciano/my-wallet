@@ -15,6 +15,14 @@ export default function LogInPage() {
   const { setUserInfos } = useContext(UserContext);
   const navigate = useNavigate();
 
+   const storedData = JSON.parse(localStorage.getItem("userInfos"));
+
+  useEffect(() => {
+    if (storedData) {
+      navigate("/extract");
+    }
+  }, []); 
+  
   function saveLocalStorage(obj) {
     localStorage.setItem("userInfos", JSON.stringify(obj));
   }
@@ -38,7 +46,9 @@ export default function LogInPage() {
       alert(err.response.data.message);
     }
   }
-
+  if(storedData) {
+    return;
+  }
   return (
     <Container>
       <Logo />
@@ -58,7 +68,7 @@ export default function LogInPage() {
           required
         />
         <Button isLoading={isLoading} type="submit">
-          {isLoading ? <Loading size={30} color={"white"}/> : "Entrar"}
+          {isLoading ? <Loading size={30} color={"white"} /> : "Entrar"}
         </Button>
       </form>
       <StyledLink to="/sign-up">Primeira vez? Cadastre-se!</StyledLink>

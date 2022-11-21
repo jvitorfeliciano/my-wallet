@@ -43,7 +43,7 @@ export default function EditOutflowPage() {
   return (
     <Container>
       <Title>
-        <h1>Editar Saída</h1>
+        <h1>Editar saída</h1>
       </Title>
       <form onSubmit={handleEditOutflowForm}>
         <Input

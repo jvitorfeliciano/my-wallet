@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://mywallet-api-66kl.onrender.com";
 
 function createConfig(token) {
   return { headers: { Authorization: `Bearer ${token}` } };
@@ -40,6 +40,12 @@ function editExtract(token,body,id) {
   const promise = axios.put(`${BASE_URL}/extract/${id}`, body, config);
   return promise;
 }
+function deleteSession(token) {
+  const config = createConfig(token);
+  const promise = axios.delete(`${BASE_URL}/delete-session`, config);
+  return promise;
+}
+
 const api = {
   signUp,
   logIn,
@@ -47,6 +53,7 @@ const api = {
   postExtract,
   deleteExtract,
   editExtract,
+  deleteSession
 };
 
 export default api;
