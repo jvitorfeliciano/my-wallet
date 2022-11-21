@@ -1,4 +1,4 @@
-import { useContext, useState} from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
@@ -13,6 +13,14 @@ export default function OutflowPage() {
   const { userInfos } = useContext(UserContext);
   const navigate = useNavigate();
 
+  const storedData = JSON.parse(localStorage.getItem("userInfos"));
+
+  useEffect(() => {
+    if (!storedData) {
+      navigate("/");
+    }
+  }, []);
+
   function getOutFlowInfoForm(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
@@ -26,14 +34,16 @@ export default function OutflowPage() {
     };
 
     try {
-      const response = await api.postExtract(userInfos.token, body);
+      await api.postExtract(userInfos.token, body);
       setIsLoading(false);
       navigate("/extract");
-      console.log(response.data);
     } catch (err) {
       setIsLoading(false);
       alert(err.response.data.message);
     }
+  }
+  if (!storedData) {
+    return;
   }
   return (
     <Container>

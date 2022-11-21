@@ -42,12 +42,10 @@ export default function Extract({
     if (continueDeletion) {
       setIsloading(true);
       try {
-        const sucesso = await api.deleteExtract(userInfos.token, id);
+        await api.deleteExtract(userInfos.token, id);
         setUpdate(!update);
         setIsloading(false);
-        console.log(sucesso);
       } catch (err) {
-        console.log(err.response);
         setIsloading(false);
       }
     }

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
@@ -14,6 +14,14 @@ export default function EditInflowPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const storedData = JSON.parse(localStorage.getItem("userInfos"));
+
+  useEffect(() => {
+    if (!storedData) {
+      navigate("/");
+    }
+  }, []);
+
   function getEditInflowFormInfo(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
@@ -27,11 +35,7 @@ export default function EditInflowPage() {
       type: "positive",
     };
     try {
-       await api.editExtract(
-        userInfos.token,
-        body,
-        location.state
-      );
+      await api.editExtract(userInfos.token, body, location.state);
       setIsLoading(false);
       navigate("/extract");
     } catch (err) {
@@ -39,7 +43,9 @@ export default function EditInflowPage() {
       alert(err.response.data.message);
     }
   }
-
+  if (!storedData) {
+    return;
+  }
   return (
     <Container>
       <Title>

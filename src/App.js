@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import GlobalStyle from "./style/GlobalStyle";
 import SignUpPage from "./pages/SignUpPage/SignUpPage";
 import ExtractPage from "./pages/ExtractPage/ExtractPage";

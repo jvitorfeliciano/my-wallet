@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
@@ -12,6 +12,14 @@ export default function InflowPage() {
   const [isLoading, setIsLoading] = useState(false);
   const { userInfos } = useContext(UserContext);
   const navigate = useNavigate();
+
+  const storedData = JSON.parse(localStorage.getItem("userInfos"));
+
+  useEffect(() => {
+    if (!storedData) {
+      navigate("/");
+    }
+  }, []);
 
   function getInflowFormInfo(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -34,7 +42,9 @@ export default function InflowPage() {
       alert(err.response.data.message);
     }
   }
-
+  if (!storedData) {
+    return;
+  }
   return (
     <Container>
       <Title>

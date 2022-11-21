@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../../components/Button/Button";
@@ -14,6 +14,14 @@ export default function EditOutflowPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const storedData = JSON.parse(localStorage.getItem("userInfos"));
+
+  useEffect(() => {
+    if (!storedData) {
+      navigate("/");
+    }
+  }, []);
+
   function getEditOutflowFormInfo(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
@@ -26,7 +34,6 @@ export default function EditOutflowPage() {
       ...form,
       type: "negative",
     };
-    console.log(body);
     try {
       await api.editExtract(userInfos.token, body, location.state);
       setIsLoading(false);
@@ -36,7 +43,9 @@ export default function EditOutflowPage() {
       alert(err.response.data.message);
     }
   }
-
+  if (!storedData) {
+    return;
+  }
   return (
     <Container>
       <Title>

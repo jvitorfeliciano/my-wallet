@@ -16,6 +16,14 @@ export default function ExtractPage() {
   const [update, setUpdate] = useState(false);
   const navigate = useNavigate();
 
+  const storedData = JSON.parse(localStorage.getItem("userInfos"));
+
+  useEffect(() => {
+    if (!storedData) {
+      navigate("/");
+    }
+  }, []);
+
   useEffect(() => {
     if (userInfos) {
       api
@@ -47,6 +55,9 @@ export default function ExtractPage() {
     );
   }
 
+  if (!storedData) {
+    return;
+  }
   return (
     <Container>
       <Header>
